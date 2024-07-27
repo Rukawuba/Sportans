@@ -1,6 +1,7 @@
 import streamlit as st
 from passlib.hash import sha256_crypt
-import mysql.connector
+import MySQLdb
+
 
 # Function for user registration
 def register(connection, cursor):
@@ -22,8 +23,14 @@ def register(connection, cursor):
             hashed_password = sha256_crypt.hash(password)
             cursor.execute("INSERT INTO users (name, email, password, role) VALUES (%s, %s, %s, %s)", (name, email, hashed_password, role))
             connection.commit()
-            cursor.close()
+            
             st.success("Registration successful. You can now log in.")
+
+        if role == "player":
+            cursor.execute("INSERT INTO players (name, contact_email) VALUES (%s, %s)", (name, email))
+            connection.commit()
+
+        cursor.close()
 
 # Function for user login
 def login(connection, cursor):
@@ -33,7 +40,7 @@ def login(connection, cursor):
 
     if st.button("Login"):
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        cursor.execute(f"SELECT * FROM users WHERE email = '{email}'")
         user = cursor.fetchone()
 
         if user:
@@ -57,16 +64,27 @@ def login(connection, cursor):
 def main():
     st.sidebar.write("Created with  ❤  by Team Sportans")
 
-    db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "Reddy0314@",
-    "database": "SSIP",
-    }
-
     
-    connection = mysql.connector.connect(**db_config)
-    cursor = connection.cursor()
+
+    # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
+
+    try:
+        # Establish a connection
+        connection = MySQLdb.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+        cursor = connection.cursor()
+    except MySQLdb.Error as e:
+        print(f"Error: {e}")
 
     with st.sidebar:
         selected_option=st.radio("Select an Option",["Register","Login"])

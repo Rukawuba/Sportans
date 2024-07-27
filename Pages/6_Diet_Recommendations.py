@@ -1,4 +1,6 @@
 import streamlit as st
+from dotenv import load_dotenv
+import os
 
 # Function to calculate BMI
 def calculate_bmi(weight, height, age, gender):

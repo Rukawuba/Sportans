@@ -1,63 +1,94 @@
 import streamlit as st
 from datetime import date, time
 import mysql.connector
+from dotenv import load_dotenv
+import os
+import MySQLdb
 
 # Function to add an event to the database
 def search_event():
-    db_config = {
-            "host": "localhost",
-            "user": "root",
-            "password": "Reddy0314@",
-            "database": "SSIP",
-        }
+    # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
 
-    # Establish a database connection
-    db = mysql.connector.connect(**db_config)
-    cursor = db.cursor()
+    try:
+        # Establish a connection
+        connection = MySQLdb.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+        cursor = connection.cursor()
+    except MySQLdb.Error as e:
+        print(f"Error: {e}")
+
     Date=st.date_input(" Event Date " ,min_value=date.today())
     if Date:
         cursor.execute("Select * from schedule where event_date=%s",(Date,))
         events=cursor.fetchall()
         
     cursor.close()
-    db.close()
+    connection.close()
 
     return events
 def add_event(event_type, event_date, event_time, location, description):
-    db_config = {
-            "host": "localhost",
-            "user": "root",
-            "password": "Reddy0314@",
-            "database": "SSIP",
-        }
+   # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
 
-    # Establish a database connection
-    db = mysql.connector.connect(**db_config)
-    cursor = db.cursor()
+    try:
+        # Establish a connection
+        connection = MySQLdb.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+        cursor = connection.cursor()
+    except MySQLdb.Error as e:
+        print(f"Error: {e}")
 
     # Insert the event into the database
     cursor.execute("INSERT INTO schedule (event_type, event_date, event_time, location, description) VALUES (%s, %s, %s, %s, %s)",
                    (event_type, event_date, event_time, location, description))
 
     
-    db.commit()
+    connection.commit()
 
     # Close the database connection
     cursor.close()
-    db.close()
+    connection.close()
 
 # Function to retrieve all events from the database
 def get_events():
-    db_config = {
-            "host": "localhost",
-            "user": "root",
-            "password": "Reddy0314@",
-            "database": "SSIP",
-        }
+    # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
 
-    # Establish a database connection
-    db = mysql.connector.connect(**db_config)
-    cursor = db.cursor()
+    try:
+        # Establish a connection
+        connection = MySQLdb.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+        cursor = connection.cursor()
+    except MySQLdb.Error as e:
+        print(f"Error: {e}")
 
     # Retrieve all events from the database
     cursor.execute("SELECT id, event_type, event_date, event_time, location, description FROM schedule")
@@ -65,7 +96,7 @@ def get_events():
 
     # Close the database connection
     cursor.close()
-    db.close()
+    connection.close()
 
     return events
 

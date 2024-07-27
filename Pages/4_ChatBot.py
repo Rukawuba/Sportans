@@ -1,7 +1,9 @@
 import streamlit as st
 import google.generativeai as genai
+from dotenv import load_dotenv
+import os
 
-
+load_dotenv()
 # Streamlit page configuration
 st.set_page_config(page_title="Sporta Bot", layout="wide")
 with st.sidebar :
@@ -11,7 +13,7 @@ with st.sidebar :
              If you want to learn Specific skill only Choose our Sporta Coach""" , ["Sporta Coach","Sporta Bot"])
 
 # Configure Google Generative AI API
-genai.configure(api_key="AIzaSyAz2-s0Ti5Qf6G7wcKgg9iaqJ4-_b9vjbE")
+genai.configure(api_key=os.getenv("api_key"))
 
 # Initialize the model
 model = genai.GenerativeModel("gemini-pro")

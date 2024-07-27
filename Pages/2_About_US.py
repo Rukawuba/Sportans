@@ -1,4 +1,9 @@
 import streamlit as st
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv()
 
 def about_us():
     st.title("About Us")

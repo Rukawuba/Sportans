@@ -1,6 +1,8 @@
 import streamlit as st
 import mysql.connector
-from Login_Register import login
+from dotenv import load_dotenv
+import os
+import MySQLdb
 
 # Function for coach actions
 def coach_actions():
@@ -15,40 +17,56 @@ def coach_actions():
         district = st.text_input("Enter District")
 
         if team_name and state and district:
-            # Database configuration
-            db_config = {
-                "host": "localhost",
-                "user": "root",
-                "password": "Reddy0314@",
-                "database": "SSIP",
-            }
+            # Connection parameters
+            db_host = 'sportan-sportans.g.aivencloud.com'
+            db_port = 10931
+            db_user = 'avnadmin'
+            db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+            db_name = 'defaultdb'
 
-            # Establish a database connection
-            db = mysql.connector.connect(**db_config)
-            cursor = db.cursor()
+            try:
+                # Establish a connection
+                connection = MySQLdb.connect(
+                    host=db_host,
+                    port=db_port,
+                    user=db_user,
+                    passwd=db_password,
+                    db=db_name
+                )
+                cursor = connection.cursor()
+            except MySQLdb.Error as e:
+                print(f"Error: {e}")
 
             # Insert the new team into the 'team' table
             cursor.execute("INSERT INTO teams (team_name, state, district) VALUES (%s, %s, %s)", (team_name, state, district))
-            db.commit()
+            connection.commit()
 
             # Close the database connection
             cursor.close()
-            db.close()
+            connection.close()
 
             st.success("Team created successfully.")
 
     elif action == "List Teams":
-        # List existing teams
-        db_config = {
-            "host": "localhost",
-            "user": "root",
-            "password": "Reddy0314@",
-            "database": "SSIP",
-        }
+            # Connection parameters
+        db_host = 'sportan-sportans.g.aivencloud.com'
+        db_port = 10931
+        db_user = 'avnadmin'
+        db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+        db_name = 'defaultdb'
 
-        # Establish a database connection
-        db = mysql.connector.connect(**db_config)
-        cursor = db.cursor()
+        try:
+            # Establish a connection
+            connection = MySQLdb.connect(
+                host=db_host,
+                port=db_port,
+                user=db_user,
+                passwd=db_password,
+                db=db_name
+            )
+            cursor = connection.cursor()
+        except MySQLdb.Error as e:
+            print(f"Error: {e}")
 
         # Retrieve and display teams
         cursor.execute("SELECT * FROM teams")
@@ -67,7 +85,7 @@ def coach_actions():
 
         # Close the database connection
         cursor.close()
-        db.close()
+        connection.close()
 
     elif action == "Add Player to Team":
         team_name = st.text_input("Enter Team Name")
@@ -77,40 +95,50 @@ def coach_actions():
         email = st.text_input("Enter Player Email")
 
         if team_name and player_name and role and contact and email:
-            db_config = {
-                "host": "localhost",
-                "user": "root",
-                "password": "Reddy0314@",
-                "database": "SSIP",
-            }
+                    # Connection parameters
+            db_host = 'sportan-sportans.g.aivencloud.com'
+            db_port = 10931
+            db_user = 'avnadmin'
+            db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+            db_name = 'defaultdb'
 
-            # Establish a database connection
-            db = mysql.connector.connect(**db_config)
-            cursor = db.cursor()
+            try:
+                # Establish a connection
+                connection = MySQLdb.connect(
+                    host=db_host,
+                    port=db_port,
+                    user=db_user,
+                    passwd=db_password,
+                    db=db_name
+                )
+                cursor = connection.cursor()
+            except MySQLdb.Error as e:
+                print(f"Error: {e}")
 
-            # Check if the team exists
-            cursor.execute("SELECT * FROM teams WHERE team_name = %s", (team_name,))
-            team = cursor.fetchone()
 
-            if team:
-                # Insert the new player into the 'players' table
-                    cursor.execute("INSERT INTO players (name, role, contact_phone, contact_email) VALUES (%s, %s, %s, %s)", (player_name, role, contact, email))
-                    db.commit()
-                    cursor.execute("Select * from players where name= %s",(player_name,))
-                    p_id=cursor.fetchone()
-                    if p_id:
-                        cursor.execute("Insert into team_player(team_id,player_id) values (%s,%s)",(team[0],p_id[0]))
-                        db.commit()
+            cursor.execute("SELECT * FROM players WHERE name = %s", (player_name,))
+            player = cursor.fetchone()
+            if player:
+                # Check if the team exists
+                cursor.execute("SELECT * FROM teams WHERE team_name = %s", (team_name,))
+                team = cursor.fetchone()
+
+                if team:
+                    # Insert the new player into the 'players' table
+                        cursor.execute("INSERT INTO t_players (name, role, contact_phone, contact_email) VALUES (%s, %s, %s, %s)", (player_name, role, contact, email))
+                        connection.commit()
+                        cursor.execute("Insert into team_player(team_id,player_id) values (%s,%s)",(team[0],player[0]))
+                        connection.commit()
                         st.success("Player added to the team successfully.")
-                    else:
-                        st.error("User not found. Please check the player name.")
-                
+                        
+                else:
+                    st.error("Team not found. Please check the team name.")
             else:
-                st.error("Team not found. Please check the team name.")
+                st.error("Player not Registered.")
 
             # Close the database connection
             cursor.close()
-            db.close()
+            connection.close()
 
     elif action == "Edit/Delete Player":
         st.warning("To be implemented.")
@@ -121,19 +149,30 @@ def coach_actions():
 
         if search_option == "Team Name":
             # Search players by team name
-            db_config = {
-                "host": "localhost",
-                "user": "root",
-                "password": "Reddy0314@",
-                "database": "SSIP",
-            }
+            # Connection parameters
+            db_host = 'sportan-sportans.g.aivencloud.com'
+            db_port = 10931
+            db_user = 'avnadmin'
+            db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+            db_name = 'defaultdb'
 
-            # Establish a database connection
-            db = mysql.connector.connect(**db_config)
-            cursor = db.cursor()
+            try:
+                # Establish a connection
+                connection = MySQLdb.connect(
+                    host=db_host,
+                    port=db_port,
+                    user=db_user,
+                    passwd=db_password,
+                    db=db_name
+                )
+                cursor = connection.cursor()
+            except MySQLdb.Error as e:
+                print(f"Error: {e}")
 
             # Retrieve and display players based on team name
-            cursor.execute("SELECT * FROM players WHERE id IN (SELECT id FROM teams WHERE team_name = %s)", (search_value,))
+            query = 'SELECT * FROM players WHERE id IN (SELECT player_id FROM team_player WHERE team_id IN (SELECT id FROM teams WHERE team_name = %s))'
+            
+            cursor.execute(query,(search_value,))
             players = cursor.fetchall()
 
             if players:
@@ -142,28 +181,35 @@ def coach_actions():
                     
                     st.write(f'''- Player ID: {player[0]}
                                           \n- Player Name: {player[1]}
-                                          \n- Role: {player[4]}
-                                          \n- Contact: {player[3]}
                                           \n- Email: {player[2]}''')
             else:
                 st.info("No players found in the specified team.")
 
             # Close the database connection
             cursor.close()
-            db.close()
+            connection.close()
         elif search_option == "Player ID":
-            # Search players by player ID
-            db_config = {
-                "host": "localhost",
-                "user": "root",
-                "password": "Reddy0314@",
-                "database": "SSIP",
-            }
+                    # Connection parameters
+            db_host = 'sportan-sportans.g.aivencloud.com'
+            db_port = 10931
+            db_user = 'avnadmin'
+            db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+            db_name = 'defaultdb'
 
-            db = mysql.connector.connect(**db_config)
-            cursor = db.cursor()
+            try:
+                # Establish a connection
+                connection = MySQLdb.connect(
+                    host=db_host,
+                    port=db_port,
+                    user=db_user,
+                    passwd=db_password,
+                    db=db_name
+                )
+                cursor = connection.cursor()
+            except MySQLdb.Error as e:
+                print(f"Error: {e}")
 
-            cursor.execute("SELECT * FROM players WHERE id IN (SELECT id FROM players WHERE name = %s)", (search_value,))
+            cursor.execute("SELECT * FROM t_players WHERE id IN (SELECT id FROM players WHERE id = %s)", (search_value,))
             players = cursor.fetchall()
 
             if players:
@@ -184,15 +230,25 @@ def send_request_to_join_team():
     submit_button = st.button("Send Request")
 
     if submit_button:
-        # Establish a database connection
-        db_config = {
-            "host": "localhost",
-            "user": "root",
-            "password": "Reddy0314@",
-            "database": "SSIP",
-        }
-        db = mysql.connector.connect(**db_config)
-        cursor = db.cursor()
+            # Connection parameters
+        db_host = 'sportan-sportans.g.aivencloud.com'
+        db_port = 10931
+        db_user = 'avnadmin'
+        db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+        db_name = 'defaultdb'
+
+        try:
+            # Establish a connection
+            connection = MySQLdb.connect(
+                host=db_host,
+                port=db_port,
+                user=db_user,
+                passwd=db_password,
+                db=db_name
+            )
+            cursor = connection.cursor()
+        except MySQLdb.Error as e:
+            print(f"Error: {e}")
 
         # Check if the team exists
         cursor.execute("SELECT * FROM teams WHERE Team_Name = %s", (team_name,))
@@ -204,7 +260,7 @@ def send_request_to_join_team():
             # Get the player's user ID (replace with actual user ID retrieval)
             name = st.text_input("Name")
             # Fetch teams for the user
-            cursor.execute(" select user_id from users where name=%s",(name,))
+            cursor.execute(" select id from users where name=%s",(name,))
             player_id=cursor.fetchone()
 
             # Check if the player has already sent a request to this team
@@ -216,12 +272,12 @@ def send_request_to_join_team():
             else:
                 # Send the request to join the team
                 cursor.execute("INSERT INTO player_requests (team_id, player_id) VALUES (%s, %s)", (team[0], player_id))
-                db.commit()
+                connection.commit()
                 st.success("Request sent successfully. Wait for the coach's response.")
 
         # Close the database connection
         cursor.close()
-        db.close()
+        connection.close()
 
 def player_actions():
     st.subheader("Player Actions")
@@ -229,16 +285,25 @@ def player_actions():
     # List all teams the player is part of
     st.write("Press Submit if you want to see Which teams You Belong to")
     
-    # Connect to the database
-    db_config = {
-            "host": "localhost",
-            "user": "root",
-            "password": "Reddy0314@",
-            "database": "SSIP",
-        }
-    
-    db = mysql.connector.connect(**db_config)
-    cursor = db.cursor()
+    # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
+
+    try:
+        # Establish a connection
+        connection = MySQLdb.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+        cursor = connection.cursor()
+    except MySQLdb.Error as e:
+        print(f"Error: {e}")
 
     # Fetch teams for the user
     user_id=st.session_state["Id"]
@@ -269,19 +334,31 @@ def player_actions():
             send_request_to_join_team()
     
     cursor.close()
-    db.close()
+    connection.close()
 
 if __name__ == "__main__":
     st.sidebar.write("Created with  ❤  by Team Sportans")
 
-    db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "Reddy0314@",
-    "database": "SSIP",
-    }
-    connection = mysql.connector.connect(**db_config)
-    cursor = connection.cursor()
+    
+    # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
+
+    try:
+        # Establish a connection
+        connection = MySQLdb.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+        cursor = connection.cursor()
+    except MySQLdb.Error as e:
+        print(f"Error: {e}")
 
     if "Login" not in st.session_state :
         st.session_state["Login"] = ""

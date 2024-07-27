@@ -3,12 +3,14 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from dotenv import load_dotenv
+import os
 
 
 st.warning("   Coming Soon   ")
-
-"""
-# Set your Google Fit API key
+def get ():
+    """
+    # Set your Google Fit API key
 google_fit_api_key = 'your_api_key_here'
 
 # Function to retrieve fitness data

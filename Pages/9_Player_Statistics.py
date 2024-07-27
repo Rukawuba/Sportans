@@ -1,40 +1,60 @@
 import streamlit as st
 import mysql.connector
+import MySQLdb
+import os
 
 # Function to add player statistics to the database
 def add_player_statistics(player_id, goals_scored, assists, other_metrics):
-    db_config = {
-        "host": "localhost",
-        "user": "root",
-        "password": "Reddy0314@",
-        "database": "SSIP",
-    }
+    # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
 
-    # Establish a database connection
-    db = mysql.connector.connect(**db_config)
-    cursor = db.cursor()
+    try:
+        # Establish a connection
+        connection = MySQLdb.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+        cursor = connection.cursor()
+    except MySQLdb.Error as e:
+        print(f"Error: {e}")
 
     # Insert player statistics into the database
     cursor.execute("INSERT INTO player_statistics (player_id, goals_scored, assists, other_metrics) VALUES (%s, %s, %s, %s)",
                    (player_id, goals_scored, assists, other_metrics))
-    db.commit()
+    connection.commit()
 
     # Close the database connection
     cursor.close()
-    db.close()
+    connection.close()
 
 # Function to retrieve player statistics from the database
 def get_player_statistics(player_id):
-    db_config = {
-        "host": "localhost",
-        "user": "root",
-        "password": "Reddy0314@",
-        "database": "SSIP",
-    }
+    # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
 
-    # Establish a database connection
-    db = mysql.connector.connect(**db_config)
-    cursor = db.cursor()
+    try:
+        # Establish a connection
+        connection = MySQLdb.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+        cursor = connection.cursor()
+    except MySQLdb.Error as e:
+        print(f"Error: {e}")
 
     # Retrieve player statistics from the database
     cursor.execute("SELECT id, player_id, goals_scored, assists, other_metrics FROM player_statistics WHERE player_id = %s", (player_id,))
@@ -42,7 +62,7 @@ def get_player_statistics(player_id):
 
     # Close the database connection
     cursor.close()
-    db.close()
+    connection.close()
 
     return player_stats
 
@@ -80,14 +100,25 @@ def main(user_role):
 if __name__ == '__main__':
     st.sidebar.write("Created with  ❤  by Team Sportans")
 
-    db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "Reddy0314@",
-    "database": "SSIP",
-    }
-    connection = mysql.connector.connect(**db_config)
-    cursor = connection.cursor()
+    # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
+
+    try:
+        # Establish a connection
+        connection = MySQLdb.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+        cursor = connection.cursor()
+    except MySQLdb.Error as e:
+        print(f"Error: {e}")
     
     if "Login" not in st.session_state :
         st.session_state["Login"] = ""

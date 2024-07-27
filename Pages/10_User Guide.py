@@ -1,27 +1,36 @@
 import streamlit as st
-import mysql.connector
+import MySQLdb
+from datetime import datetime
 
 def send_feedback(name, user_message):
-    db_config = {
-        "host": "localhost",
-        "user": "root",
-        "password": "Reddy0314@",
-        "database": "SSIP",
-    }
+   # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
 
-    # Establish a database connection
-    db = mysql.connector.connect(**db_config)
-    cursor = db.cursor()
+    try:
+        # Establish a connection
+        connection = MySQLdb.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+        cursor = connection.cursor()
+    except MySQLdb.Error as e:
+        print(f"Error: {e}")
 
-    query='select * from Users where name="%s"'%(name)
-    user_id=cursor.fetchone()[0][0]
+    timestamp = datetime.now()
     # Store the user's feedback in the database
-    cursor.execute("INSERT INTO Feedback (user_id,name, content) VALUES (%s, %s)", (user_id,name, user_message))
-    db.commit()
+    cursor.execute("INSERT INTO feedback (name,timestamp,content) VALUES (%s,%s, %s)", (name,timestamp, user_message))
+    connection.commit()
 
     # Close the database connection
     cursor.close()
-    db.close()
+    connection.close()
 
     return True
 
