@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 
 
-st.warning("   Coming Soon   ")
+st.warning("As of Now , Google fit is being Transferred to Health Connect , So we request you to be patient as we deploy this feature soon. ")
 def get ():
     """
     # Set your Google Fit API key
