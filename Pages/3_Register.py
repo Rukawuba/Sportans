@@ -4,7 +4,7 @@ import mysql.connector as sql
 
 
 # Function for user registration
-def register(connection, cursor):
+def register():
     # Connection parameters
     db_host = 'sportan-sportans.g.aivencloud.com'
     db_port = 10931
