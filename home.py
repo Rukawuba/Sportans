@@ -63,8 +63,7 @@ pg = st.navigation({
     "Login/Register" : [register_page],
     "Features":[events_page,diet_page],
     "Login Required Features" : [chatbot_page,actions_page,statistics_page],
-    "Info": [user_guide_page,about_page],
-    "Coming Soon": [fitness_tracking_page]   
+    "Info": [user_guide_page,about_page] 
     })
 
 pg.run()
