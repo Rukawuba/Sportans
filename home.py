@@ -6,7 +6,7 @@ st.sidebar.write("Created with ❤️ by Team Sportans")
 # --- Page Setup ---
 
 home_page = st.Page(
-    page="./Home_page.py",
+    page="./Home_Page.py",
     title="🏠 Welcome to Sportans",
     default=True
 )
