@@ -9,7 +9,7 @@ st.session_state["Id"]= ""
 # Set a title for your site
 col1,col4,col2,col3=st.columns([1,0.3,5,2])
 with col1:
-     st.image("images\logo.png")
+     st.image(".\images\logo.png")
 
 with col2:
      st.write(" ")
@@ -58,7 +58,7 @@ with col1:
 with col2:
      st.write(" ")
      st.write(" ")
-     st.image("images\choose.png",width=300)
+     st.image(".\images\choose.png",width=300)
 
 st.header("Why we're Better")
 
@@ -71,7 +71,7 @@ with col3:
      st.write(" ")
      st.write(" ")
      st.write(" ")
-     st.image("images\compete.png")
+     st.image(".\images\compete.png")
 
 with col1:
     st.header("Competitive Analysis")
