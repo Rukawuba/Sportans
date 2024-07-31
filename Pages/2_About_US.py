@@ -20,7 +20,7 @@ def about_us():
     with col1:
          st.header("Mentor:")
          
-         st.image("images\mentor.jpg")
+         st.image("images/mentor.jpg")
          st.write("Nandhini K")
     
 
@@ -29,7 +29,7 @@ def about_us():
          st.write("")
          st.subheader("Team Members:")
          st.write("")
-         st.image("images\members.jpg",caption="-Kartik  -Karan Rekhan       -Naman      -Aaditya      -Mallikarjun       -Karthik      -Karan Chauhan     -Utkarsh")
+         st.image("images/members.jpg",caption="-Kartik  -Karan Rekhan       -Naman      -Aaditya      -Mallikarjun       -Karthik      -Karan Chauhan     -Utkarsh")
 
 
 
