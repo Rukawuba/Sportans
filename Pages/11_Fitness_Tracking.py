@@ -1,12 +1,4 @@
 import streamlit as st
-import requests
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-from dotenv import load_dotenv
-import os
-
-
 st.warning("   Coming Soon   ")
 def get ():
     """

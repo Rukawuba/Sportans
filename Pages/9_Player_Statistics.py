@@ -1,7 +1,5 @@
 import streamlit as st
-import mysql.connector
-import MySQLdb
-import os
+import mysql.connector as sql
 
 # Function to add player statistics to the database
 def add_player_statistics(player_id, goals_scored, assists, other_metrics):
@@ -14,7 +12,7 @@ def add_player_statistics(player_id, goals_scored, assists, other_metrics):
 
     try:
         # Establish a connection
-        connection = MySQLdb.connect(
+        connection = sql.connect(
             host=db_host,
             port=db_port,
             user=db_user,
@@ -22,7 +20,7 @@ def add_player_statistics(player_id, goals_scored, assists, other_metrics):
             db=db_name
         )
         cursor = connection.cursor()
-    except MySQLdb.Error as e:
+    except sql.Error as e:
         print(f"Error: {e}")
 
     # Insert player statistics into the database
@@ -45,7 +43,7 @@ def get_player_statistics(player_id):
 
     try:
         # Establish a connection
-        connection = MySQLdb.connect(
+        connection = sql.connect(
             host=db_host,
             port=db_port,
             user=db_user,
@@ -53,7 +51,7 @@ def get_player_statistics(player_id):
             db=db_name
         )
         cursor = connection.cursor()
-    except MySQLdb.Error as e:
+    except sql.Error as e:
         print(f"Error: {e}")
 
     # Retrieve player statistics from the database
@@ -97,33 +95,30 @@ def main(user_role):
     else:
         st.error("Please Login to Continue ")
 
-if __name__ == '__main__':
-    st.sidebar.write("Created with  ❤  by Team Sportans")
+# Connection parameters
+db_host = 'sportan-sportans.g.aivencloud.com'
+db_port = 10931
+db_user = 'avnadmin'
+db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+db_name = 'defaultdb'
 
-    # Connection parameters
-    db_host = 'sportan-sportans.g.aivencloud.com'
-    db_port = 10931
-    db_user = 'avnadmin'
-    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
-    db_name = 'defaultdb'
+try:
+    # Establish a connection
+    connection = sql.connect(
+        host=db_host,
+        port=db_port,
+        user=db_user,
+        passwd=db_password,
+        db=db_name
+    )
+    cursor = connection.cursor()
+except sql.Error as e:
+    print(f"Error: {e}")
 
-    try:
-        # Establish a connection
-        connection = MySQLdb.connect(
-            host=db_host,
-            port=db_port,
-            user=db_user,
-            passwd=db_password,
-            db=db_name
-        )
-        cursor = connection.cursor()
-    except MySQLdb.Error as e:
-        print(f"Error: {e}")
-    
-    if "Login" not in st.session_state :
-        st.session_state["Login"] = ""
-        st.error("Please Login to Continue")
-    else :
-        user=st.session_state["Login"]
-        main(user)
-    
+if "Login" not in st.session_state :
+    st.session_state["Login"] = ""
+    st.error("Please Login to Continue")
+else :
+    user=st.session_state["Login"]
+    main(user)
+

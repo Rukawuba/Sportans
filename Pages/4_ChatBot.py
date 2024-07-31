@@ -1,13 +1,8 @@
 import streamlit as st
 import google.generativeai as genai
-from dotenv import load_dotenv
 import os
-
-load_dotenv()
 # Streamlit page configuration
-st.set_page_config(page_title="Sporta Bot", layout="wide")
 with st.sidebar :
-    st.write("Created with  ❤  by Team Sportans")
     u_choice = st.radio("""Choose the Interactivity Level : 
              If you Want to Gain Knowledge about Sports and Skills , Choose Sporta Bot
              If you want to learn Specific skill only Choose our Sporta Coach""" , ["Sporta Coach","Sporta Bot"])

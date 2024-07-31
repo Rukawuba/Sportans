@@ -1,8 +1,5 @@
 import streamlit as st
-import mysql.connector
-from dotenv import load_dotenv
-import os
-import MySQLdb
+import mysql.connector as sql
 
 # Function for coach actions
 def coach_actions():
@@ -26,7 +23,7 @@ def coach_actions():
 
             try:
                 # Establish a connection
-                connection = MySQLdb.connect(
+                connection = sql.connect(
                     host=db_host,
                     port=db_port,
                     user=db_user,
@@ -34,7 +31,7 @@ def coach_actions():
                     db=db_name
                 )
                 cursor = connection.cursor()
-            except MySQLdb.Error as e:
+            except sql.Error as e:
                 print(f"Error: {e}")
 
             # Insert the new team into the 'team' table
@@ -57,7 +54,7 @@ def coach_actions():
 
         try:
             # Establish a connection
-            connection = MySQLdb.connect(
+            connection = sql.connect(
                 host=db_host,
                 port=db_port,
                 user=db_user,
@@ -65,7 +62,7 @@ def coach_actions():
                 db=db_name
             )
             cursor = connection.cursor()
-        except MySQLdb.Error as e:
+        except sql.Error as e:
             print(f"Error: {e}")
 
         # Retrieve and display teams
@@ -104,7 +101,7 @@ def coach_actions():
 
             try:
                 # Establish a connection
-                connection = MySQLdb.connect(
+                connection = sql.connect(
                     host=db_host,
                     port=db_port,
                     user=db_user,
@@ -112,7 +109,7 @@ def coach_actions():
                     db=db_name
                 )
                 cursor = connection.cursor()
-            except MySQLdb.Error as e:
+            except sql.Error as e:
                 print(f"Error: {e}")
 
 
@@ -158,7 +155,7 @@ def coach_actions():
 
             try:
                 # Establish a connection
-                connection = MySQLdb.connect(
+                connection = sql.connect(
                     host=db_host,
                     port=db_port,
                     user=db_user,
@@ -166,7 +163,7 @@ def coach_actions():
                     db=db_name
                 )
                 cursor = connection.cursor()
-            except MySQLdb.Error as e:
+            except sql.Error as e:
                 print(f"Error: {e}")
 
             # Retrieve and display players based on team name
@@ -198,7 +195,7 @@ def coach_actions():
 
             try:
                 # Establish a connection
-                connection = MySQLdb.connect(
+                connection = sql.connect(
                     host=db_host,
                     port=db_port,
                     user=db_user,
@@ -206,7 +203,7 @@ def coach_actions():
                     db=db_name
                 )
                 cursor = connection.cursor()
-            except MySQLdb.Error as e:
+            except sql.Error as e:
                 print(f"Error: {e}")
 
             cursor.execute("SELECT * FROM t_players WHERE id IN (SELECT id FROM players WHERE id = %s)", (search_value,))
@@ -239,7 +236,7 @@ def send_request_to_join_team():
 
         try:
             # Establish a connection
-            connection = MySQLdb.connect(
+            connection = sql.connect(
                 host=db_host,
                 port=db_port,
                 user=db_user,
@@ -247,7 +244,7 @@ def send_request_to_join_team():
                 db=db_name
             )
             cursor = connection.cursor()
-        except MySQLdb.Error as e:
+        except sql.Error as e:
             print(f"Error: {e}")
 
         # Check if the team exists
@@ -294,7 +291,7 @@ def player_actions():
 
     try:
         # Establish a connection
-        connection = MySQLdb.connect(
+        connection = sql.connect(
             host=db_host,
             port=db_port,
             user=db_user,
@@ -302,7 +299,7 @@ def player_actions():
             db=db_name
         )
         cursor = connection.cursor()
-    except MySQLdb.Error as e:
+    except sql.Error as e:
         print(f"Error: {e}")
 
     # Fetch teams for the user
@@ -336,38 +333,34 @@ def player_actions():
     cursor.close()
     connection.close()
 
-if __name__ == "__main__":
-    st.sidebar.write("Created with  ❤  by Team Sportans")
+# Connection parameters
+db_host = 'sportan-sportans.g.aivencloud.com'
+db_port = 10931
+db_user = 'avnadmin'
+db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+db_name = 'defaultdb'
 
-    
-    # Connection parameters
-    db_host = 'sportan-sportans.g.aivencloud.com'
-    db_port = 10931
-    db_user = 'avnadmin'
-    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
-    db_name = 'defaultdb'
+try:
+    # Establish a connection
+    connection = sql.connect(
+        host=db_host,
+        port=db_port,
+        user=db_user,
+        passwd=db_password,
+        db=db_name
+    )
+    cursor = connection.cursor()
+except sql.Error as e:
+    print(f"Error: {e}")
 
-    try:
-        # Establish a connection
-        connection = MySQLdb.connect(
-            host=db_host,
-            port=db_port,
-            user=db_user,
-            passwd=db_password,
-            db=db_name
-        )
-        cursor = connection.cursor()
-    except MySQLdb.Error as e:
-        print(f"Error: {e}")
+if "Login" not in st.session_state :
+    st.session_state["Login"] = ""
+    st.error("Please Login to Continue")
+elif st.session_state["Login"]=="player":
+        player_actions()
+elif st.session_state["Login"]=="coach":
+        coach_actions()
+else :
+    st.error("Please Login to Continue")
 
-    if "Login" not in st.session_state :
-        st.session_state["Login"] = ""
-        st.error("Please Login to Continue")
-    elif st.session_state["Login"]=="player":
-            player_actions()
-    elif st.session_state["Login"]=="coach":
-            coach_actions()
-    else :
-        st.error("Please Login to Continue")
 
-    

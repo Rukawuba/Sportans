@@ -1,5 +1,5 @@
 import streamlit as st
-import MySQLdb
+import mysql.connector as sql
 from datetime import datetime
 
 def send_feedback(name, user_message):
@@ -12,7 +12,7 @@ def send_feedback(name, user_message):
 
     try:
         # Establish a connection
-        connection = MySQLdb.connect(
+        connection = sql.connect(
             host=db_host,
             port=db_port,
             user=db_user,
@@ -20,7 +20,7 @@ def send_feedback(name, user_message):
             db=db_name
         )
         cursor = connection.cursor()
-    except MySQLdb.Error as e:
+    except sql.Error as e:
         print(f"Error: {e}")
 
     timestamp = datetime.now()
@@ -101,15 +101,11 @@ def display_user_guides():
 
     
 
-# Main Streamlit app
-def main():
-    st.title("Sports Management System")
-    st.sidebar.write("Created with  ❤  by Team Sportans")
 
-    st.sidebar.write("Please explore user guides and tutorials.")
+st.title("Sports Management System")
 
-    # Display user guides and tutorials
-    display_user_guides()
+st.sidebar.write("Please explore user guides and tutorials.")
 
-if __name__ == "__main__":
-    main()
+# Display user guides and tutorials
+display_user_guides()
+

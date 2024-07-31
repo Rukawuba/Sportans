@@ -1,13 +1,7 @@
 import streamlit as st
-from dotenv import load_dotenv
-import os
-
-
-load_dotenv()
 
 def about_us():
     st.title("About Us")
-    st.sidebar.write("Created with  ❤  by Team Sportans")
 
     st.header("Team  Sportans")
     
@@ -38,8 +32,6 @@ def about_us():
          st.image("images\members.jpg",caption="-Kartik  -Karan Rekhan       -Naman      -Aaditya      -Mallikarjun       -Karthik      -Karan Chauhan     -Utkarsh")
 
 
-def main():
-    about_us()
 
-if __name__ == '__main__':
-    main()
+about_us()
+

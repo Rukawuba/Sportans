@@ -1,12 +1,7 @@
 import streamlit as st
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-st.set_page_config(layout="wide")
 
 
-st.sidebar.write("Created with  ❤  by Team Sportans")
+
 st.session_state["Name"] = ""
 st.session_state["Login"] = ""
 st.session_state["Id"]= ""

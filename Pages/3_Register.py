@@ -1,6 +1,6 @@
 import streamlit as st
 from passlib.hash import sha256_crypt
-import MySQLdb
+import mysql.connector as sql
 
 
 # Function for user registration
@@ -61,40 +61,32 @@ def login(connection, cursor):
             st.error("User not found. Please register first.")
     return None
 
-def main():
-    st.sidebar.write("Created with  ❤  by Team Sportans")
 
-    
 
-    # Connection parameters
-    db_host = 'sportan-sportans.g.aivencloud.com'
-    db_port = 10931
-    db_user = 'avnadmin'
-    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
-    db_name = 'defaultdb'
+# Connection parameters
+db_host = 'sportan-sportans.g.aivencloud.com'
+db_port = 10931
+db_user = 'avnadmin'
+db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+db_name = 'defaultdb'
 
-    try:
-        # Establish a connection
-        connection = MySQLdb.connect(
-            host=db_host,
-            port=db_port,
-            user=db_user,
-            passwd=db_password,
-            db=db_name
-        )
-        cursor = connection.cursor()
-    except MySQLdb.Error as e:
-        print(f"Error: {e}")
+try:
+    # Establish a connection
+    connection = sql.connect(
+        host=db_host,
+        port=db_port,
+        user=db_user,
+        passwd=db_password,
+        db=db_name
+    )
+    cursor = connection.cursor()
+except sql.Error as e:
+    print(f"Error: {e}")
 
-    with st.sidebar:
-        selected_option=st.radio("Select an Option",["Register","Login"])
-    
-    if selected_option=="Register":
-        register(connection,cursor)
-    else:
-        user=login(connection,cursor)
-        
-    
+with st.sidebar:
+    selected_option=st.radio("Select an Option",["Register","Login"])
 
-if __name__ == "__main__":
-    main()
+if selected_option=="Register":
+    register(connection,cursor)
+else:
+    user=login(connection,cursor)

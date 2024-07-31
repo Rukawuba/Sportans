@@ -1,9 +1,6 @@
 import streamlit as st
 from datetime import date, time
-import mysql.connector
-from dotenv import load_dotenv
-import os
-import MySQLdb
+import mysql.connector as sql
 
 # Function to add an event to the database
 def search_event():
@@ -16,7 +13,7 @@ def search_event():
 
     try:
         # Establish a connection
-        connection = MySQLdb.connect(
+        connection = sql.connect(
             host=db_host,
             port=db_port,
             user=db_user,
@@ -24,7 +21,7 @@ def search_event():
             db=db_name
         )
         cursor = connection.cursor()
-    except MySQLdb.Error as e:
+    except sql.Error as e:
         print(f"Error: {e}")
 
     Date=st.date_input(" Event Date " ,min_value=date.today())
@@ -46,7 +43,7 @@ def add_event(event_type, event_date, event_time, location, description):
 
     try:
         # Establish a connection
-        connection = MySQLdb.connect(
+        connection = sql.connect(
             host=db_host,
             port=db_port,
             user=db_user,
@@ -54,7 +51,7 @@ def add_event(event_type, event_date, event_time, location, description):
             db=db_name
         )
         cursor = connection.cursor()
-    except MySQLdb.Error as e:
+    except sql.Error as e:
         print(f"Error: {e}")
 
     # Insert the event into the database
@@ -79,7 +76,7 @@ def get_events():
 
     try:
         # Establish a connection
-        connection = MySQLdb.connect(
+        connection = sql.connect(
             host=db_host,
             port=db_port,
             user=db_user,
@@ -87,7 +84,7 @@ def get_events():
             db=db_name
         )
         cursor = connection.cursor()
-    except MySQLdb.Error as e:
+    except sql.Error as e:
         print(f"Error: {e}")
 
     # Retrieve all events from the database
@@ -100,43 +97,28 @@ def get_events():
 
     return events
 
-def main():
-    st.title('Event Scheduler')
-    with st.sidebar:
-        select=st.radio("Select an Option : ",["Add Event","See Events"])
-    if select=="Add Event":
-        st.subheader('Add Event')
-        event_type = st.text_input('Event Type')
-        event_date = st.date_input('Event Date', min_value=date.today())
-        event_time = st.time_input('Event Time')
-        location = st.text_input('Location')
-        description = st.text_area('Description')
 
-        if st.button('Add Event'):
-            add_event(event_type, event_date, event_time, location, description)
-            st.success('Event added successfully!')
+st.title('Event Scheduler')
+with st.sidebar:
+    select=st.radio("Select an Option : ",["Add Event","See Events"])
+if select=="Add Event":
+    st.subheader('Add Event')
+    event_type = st.text_input('Event Type')
+    event_date = st.date_input('Event Date', min_value=date.today())
+    event_time = st.time_input('Event Time')
+    location = st.text_input('Location')
+    description = st.text_area('Description')
 
-    else:
-        st.subheader('Scheduled Events')
-        box=st.selectbox(" View ",("Search By Date" , "View all events"))
+    if st.button('Add Event'):
+        add_event(event_type, event_date, event_time, location, description)
+        st.success('Event added successfully!')
 
-        if box=="Search By Date":
-                events=search_event()
-                if events:
-                    for event in events:
-                        st.write(f"Event ID: {event[0]}")
-                        st.write(f"Event Type: {event[1]}")
-                        st.write(f"Event Date: {event[2].strftime('%Y-%m-%d')}")
-                        st.write(f"Event Time: {event[3]}")
-                        st.write(f"Location: {event[4]}")
-                        st.write(f"Description: {event[5]}")
-                        st.write('---')
-                else:
-                    st.info('No events scheduled.')
+else:
+    st.subheader('Scheduled Events')
+    box=st.selectbox(" View ",("Search By Date" , "View all events"))
 
-        elif box=="View all events":
-            events = get_events()
-
+    if box=="Search By Date":
+            events=search_event()
             if events:
                 for event in events:
                     st.write(f"Event ID: {event[0]}")
@@ -149,7 +131,17 @@ def main():
             else:
                 st.info('No events scheduled.')
 
-if __name__ == '__main__':
-    st.sidebar.write("Created with  ❤  by Team Sportans")
-    
-    main()
+    elif box=="View all events":
+        events = get_events()
+
+        if events:
+            for event in events:
+                st.write(f"Event ID: {event[0]}")
+                st.write(f"Event Type: {event[1]}")
+                st.write(f"Event Date: {event[2].strftime('%Y-%m-%d')}")
+                st.write(f"Event Time: {event[3]}")
+                st.write(f"Location: {event[4]}")
+                st.write(f"Description: {event[5]}")
+                st.write('---')
+        else:
+            st.info('No events scheduled.')

@@ -1,6 +1,4 @@
 import streamlit as st
-from dotenv import load_dotenv
-import os
 
 # Function to calculate BMI
 def calculate_bmi(weight, height, age, gender):
@@ -169,63 +167,57 @@ def fitness_recommendations(bmi):
 
     return recommendations
 
-# Main Streamlit app
-def main():
-    st.title("Fitness Check")
-    st.sidebar.write("Created with  ❤  by Team Sportans")
+st.title("Fitness Check")
 
 
-    # Input fields for user information
-    age = st.number_input("Age", min_value=1)
-    height = st.number_input("Height (in centimeters)", min_value=0.1)
-    weight = st.number_input("Weight (in kilograms)", min_value=1)
-    gender = st.radio("Gender", ("Male", "Female", "Other"))
+# Input fields for user information
+age = st.number_input("Age", min_value=1)
+height = st.number_input("Height (in centimeters)", min_value=0.1)
+weight = st.number_input("Weight (in kilograms)", min_value=1)
+gender = st.radio("Gender", ("Male", "Female", "Other"))
 
-    if st.button("Submit"):
-        
-        col1,_,col2=st.columns([2,0.1,2])
+if st.button("Submit"):
+
+    col1,_,col2=st.columns([2,0.1,2])
     # Provide fitness recommendations
-        with col1:
-            # Calculate BMI
-            bmi = calculate_bmi(weight, height, age, gender)
+    with col1:
+        # Calculate BMI
+        bmi = calculate_bmi(weight, height, age, gender)
 
-            st.subheader("Your BMI: ")
-            st.write(bmi)
+        st.subheader("Your BMI: ")
+        st.write(bmi)
 
-            recommendations = fitness_recommendations(bmi)
-            st.subheader("Fitness Recommendations:")
-            st.write(recommendations)
+        recommendations = fitness_recommendations(bmi)
+        st.subheader("Fitness Recommendations:")
+        st.write(recommendations)
 
-        with col2:
-            bmr = calculate_bmr(weight, height, age, gender)
+    with col2:
+        bmr = calculate_bmr(weight, height, age, gender)
 
-            st.subheader("Your BMR : ")
-            st.write(bmr)
+        st.subheader("Your BMR : ")
+        st.write(bmr)
 
-            recommendations = Diet_recommendations(bmr)
-            st.subheader("Diet Recommendations:")
-            st.write(recommendations)
+        recommendations = Diet_recommendations(bmr)
+        st.subheader("Diet Recommendations:")
+        st.write(recommendations)
 
-    
+        
 
 
 
-        st.write("---")
+    st.write("---")
 
-        st.header("How Do I Increase my BMR ?  ")
-        st.write(''' Everyone's basal metabolic rate (BMR) is different .''')
-        st.write(
-                 " Age , Gender , Size , Height , Weight , Mass , and even the size of your internal organs (larger organs need more fuel) play a part in determining your number. There’s not much you can do to control your genetics, but you can influence your body composition with a few simple changes :"
-                 )
-        st.write('''
-                    - Build muscle :
-                    \t- The best way to increase your BMR is to build muscle. Lean muscle mass torches more calories than fat and pumps up your metabolism. Functional training will help you build muscle more than regular workouts; the latter can be limited in terms of movements.
-                    - Don't cut calories :
-                    \t- Another way to increase BMR is to eat the right number of calories. That means no semi-starved states and low BMR that comes with it. Men need to consume around 2,500 calories, and women need to consume 2,000 calories daily, according to the National Health Service (NHS). Munch on BMR-boosting foods such as hot peppers, green tea, broccoli, spices, citrus fruits, and cacao.
-                    - Minimize stress :
-                    \t- Stress is another huge contributor to low metabolism. A heightened rush of cortisol (the stress hormone) will send your body into “fight or flight” mode. This messes up your system in the long term by making you feel tired, feel irritable, and have hunger pangs and unhealthy cravings.''')
+    st.header("How Do I Increase my BMR ?  ")
+    st.write(''' Everyone's basal metabolic rate (BMR) is different .''')
+    st.write(
+    " Age , Gender , Size , Height , Weight , Mass , and even the size of your internal organs (larger organs need more fuel) play a part in determining your number. There’s not much you can do to control your genetics, but you can influence your body composition with a few simple changes :"
+    )
+    st.write('''
+    - Build muscle :
+    \t- The best way to increase your BMR is to build muscle. Lean muscle mass torches more calories than fat and pumps up your metabolism. Functional training will help you build muscle more than regular workouts; the latter can be limited in terms of movements.
+    - Don't cut calories :
+    \t- Another way to increase BMR is to eat the right number of calories. That means no semi-starved states and low BMR that comes with it. Men need to consume around 2,500 calories, and women need to consume 2,000 calories daily, according to the National Health Service (NHS). Munch on BMR-boosting foods such as hot peppers, green tea, broccoli, spices, citrus fruits, and cacao.
+    - Minimize stress :
+    \t- Stress is another huge contributor to low metabolism. A heightened rush of cortisol (the stress hormone) will send your body into “fight or flight” mode. This messes up your system in the long term by making you feel tired, feel irritable, and have hunger pangs and unhealthy cravings.''')
 
-     
 
-if __name__ == "__main__":
-    main()
