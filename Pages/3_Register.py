@@ -5,6 +5,23 @@ import mysql.connector as sql
 
 # Function for user registration
 def register(connection, cursor):
+    # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
+
+    
+        # Establish a connection
+    connection = sql.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+    cursor = connection.cursor()
     st.subheader("Register")
     name = st.text_input("Name")
     email = st.text_input("Email")
@@ -33,7 +50,24 @@ def register(connection, cursor):
         cursor.close()
 
 # Function for user login
-def login(connection, cursor):
+def login():
+    # Connection parameters
+    db_host = 'sportan-sportans.g.aivencloud.com'
+    db_port = 10931
+    db_user = 'avnadmin'
+    db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
+    db_name = 'defaultdb'
+
+    
+        # Establish a connection
+    connection = sql.connect(
+            host=db_host,
+            port=db_port,
+            user=db_user,
+            passwd=db_password,
+            db=db_name
+        )
+    cursor = connection.cursor()
     st.subheader("Login")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
@@ -63,30 +97,12 @@ def login(connection, cursor):
 
 
 
-# Connection parameters
-db_host = 'sportan-sportans.g.aivencloud.com'
-db_port = 10931
-db_user = 'avnadmin'
-db_password = 'AVNS_rQv-tHW54YDLIuObu2M' #Replace with your actual password
-db_name = 'defaultdb'
 
-try:
-    # Establish a connection
-    connection = sql.connect(
-        host=db_host,
-        port=db_port,
-        user=db_user,
-        passwd=db_password,
-        db=db_name
-    )
-    cursor = connection.cursor()
-except sql.Error as e:
-    print(f"Error: {e}")
 
 with st.sidebar:
     selected_option=st.radio("Select an Option",["Register","Login"])
 
 if selected_option=="Register":
-    register(connection,cursor)
+    register()
 else:
-    user=login(connection,cursor)
+    user=login()
