@@ -1,5 +1,17 @@
 import streamlit as st
+<<<<<<< HEAD
 st.warning("   Coming Soon   ")
+=======
+import requests
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from dotenv import load_dotenv
+import os
+
+
+st.warning("As of Now , Google fit is being Transferred to Health Connect , So we request you to be patient as we deploy this feature soon. ")
+>>>>>>> b7cd12c5311fc9aeeb91fa385870fce1fbab2717
 def get ():
     """
     # Set your Google Fit API key
